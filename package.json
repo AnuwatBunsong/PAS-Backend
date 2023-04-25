@@ -1,0 +1,26 @@
+{
+  "name": "pas-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnuwatBunsong/PAS-Backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AnuwatBunsong/PAS-Backend/issues"
+  },
+  "homepage": "https://github.com/AnuwatBunsong/PAS-Backend#readme",
+  "devDependencies": {
+    "prisma": "^4.13.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.13.0"
+  }
+}
