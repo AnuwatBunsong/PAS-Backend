@@ -1,10 +1,11 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const MinistryService = {
   createMinistry: async (data) => {
     try {
-      return await prisma.ministry.create({ data });
+      const newMinistry = await prisma.ministry.create({ data });
+      return newMinistry;
     } catch (error) {
       console.error("Error creating ministry:", error);
       throw error;
@@ -12,7 +13,8 @@ export const MinistryService = {
   },
   getAllMinistries: async () => {
     try {
-      return await prisma.ministry.findMany();
+      const ministries = await prisma.ministry.findMany();
+      return ministries;
     } catch (error) {
       console.error("Error fetching ministries:", error);
       throw error;
@@ -20,7 +22,10 @@ export const MinistryService = {
   },
   getMinistryById: async (id) => {
     try {
-      return await prisma.ministry.findUnique({ where: { id } });
+      const ministry = await prisma.ministry.findUnique({
+        where: { id: Number(id) },
+      });
+      return ministry;
     } catch (error) {
       console.error(`Error fetching ministry with ID ${id}:`, error);
       throw error;
@@ -28,7 +33,11 @@ export const MinistryService = {
   },
   updateMinistry: async (id, data) => {
     try {
-      return await prisma.ministry.update({ where: { id }, data });
+      const updatedMinistry = await prisma.ministry.update({
+        where: { id: Number(id) },
+        data,
+      });
+      return updatedMinistry;
     } catch (error) {
       console.error(`Error updating ministry with ID ${id}:`, error);
       throw error;
@@ -36,7 +45,10 @@ export const MinistryService = {
   },
   deleteMinistry: async (id) => {
     try {
-      return await prisma.ministry.delete({ where: { id } });
+      const deletedMinistry = await prisma.ministry.delete({
+        where: { id: Number(id) },
+      });
+      return deletedMinistry;
     } catch (error) {
       console.error(`Error deleting ministry with ID ${id}:`, error);
       throw error;
