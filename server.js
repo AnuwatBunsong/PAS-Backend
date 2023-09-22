@@ -1,7 +1,9 @@
 import Fastify from "fastify";
 import routes from "./routes/index.js";
-
+import cors from "@fastify/cors";
 const fastify = Fastify({ logger: true });
+
+fastify.register(cors, { origin: "*" });
 
 fastify.register(routes.ministryRoutes, { prefix: "/api" });
 fastify.register(routes.departmentRoutes, { prefix: "/api" });
@@ -18,3 +20,7 @@ const start = async () => {
 };
 
 start();
+
+export default {
+  fastify,
+};

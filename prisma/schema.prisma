@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Admin {
+model User {
   id              Int           @id(map: "admin_pkey") @default(autoincrement())
   username        String?       @db.VarChar
   password        String?       @db.VarChar
@@ -15,8 +15,10 @@ model Admin {
   picture         String?       @db.VarChar
   organization_id Int?
   department_id   Int?
-  Department      Department?   @relation(fields: [department_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "admin_department_id_fkey")
-  Organization    Organization? @relation(fields: [organization_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "admin_organization_id_fkey")
+  ministry_id     Int?
+  ministry        Ministry?     @relation(fields: [ministry_id], references: [id], map: "admin_ministry_id_fkey")
+  Department      Department?   @relation(fields: [department_id], references: [id], map: "admin_department_id_fkey")
+  Organization    Organization? @relation(fields: [organization_id], references: [id], map: "admin_organization_id_fkey")
 }
 
 model ContactDetail {
@@ -32,17 +34,17 @@ model ContactDetail {
   position_     String?     @map("position ") @db.VarChar(128)
   adderr_       String?     @map("adderr ") @db.VarChar(256)
   picture_      String?     @map("picture ") @db.VarChar(50)
-  Department    Department? @relation(fields: [department_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "contact_detail_department_id_fkey")
-  Ministry      Ministry?   @relation(fields: [ministry_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "contact_detail_ministry_id_fkey")
+  Department    Department? @relation(fields: [department_id], references: [id], map: "contact_detail_department_id_fkey")
+  Ministry      Ministry?   @relation(fields: [ministry_id], references: [id], map: "contact_detail_ministry_id_fkey")
 }
 
 model Department {
   id            Int             @id(map: "department_pkey") @default(autoincrement())
   minisid       Int?
   name          String?         @db.VarChar
-  Admin         Admin[]
+  Admin         User[]
   ContactDetail ContactDetail[]
-  Ministry      Ministry?       @relation(fields: [minisid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "department_minisid_fkey")
+  Ministry      Ministry?       @relation(fields: [minisid], references: [id], map: "department_minisid_fkey")
 }
 
 model Ministry {
@@ -50,17 +52,17 @@ model Ministry {
   name          String?         @db.VarChar
   ContactDetail ContactDetail[]
   Department    Department[]
+  User          User[]
 }
 
 model Organization {
   id    Int     @id(map: "organization_pkey") @default(autoincrement())
   name  String? @db.VarChar
   logo  String? @db.VarChar
-  Admin Admin[]
+  Admin User[]
 }
 
 enum userrole {
   SUPER_ADMIN
   ADMIN
-  ADMIN_DEPARTMENT
 }
