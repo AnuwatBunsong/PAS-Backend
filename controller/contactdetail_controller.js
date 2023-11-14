@@ -38,11 +38,9 @@ const getContactDetailByIdController = async (req, reply) => {
     reply.send(contactDetail);
   } catch (error) {
     console.log("🚀 get contact detail by id error:", error);
-    reply
-      .code(500)
-      .send({
-        message: "Error occurred while fetching the contact detail by id",
-      });
+    reply.code(500).send({
+      message: "Error occurred while fetching the contact detail by id",
+    });
   }
 };
 
@@ -81,10 +79,49 @@ const deleteContactDetailController = async (req, reply) => {
   }
 };
 
+const getAllContactDetailsInSameDeptAndMinistryController = async (
+  req,
+  reply
+) => {
+  try {
+    const { id, ministryId } = req.params;
+    const contactDetails =
+      await ContactDetailService.getAllContactDetailsInSameDeptAndMinistry(
+        id,
+        ministryId
+      );
+    if (!contactDetails) {
+      reply.code(404).send({ message: "Contact details not found" });
+      return;
+    }
+    reply.send(contactDetails);
+  } catch (error) {
+    console.log("🚀 get contact details error:", error);
+    reply
+      .code(500)
+      .send({ message: "Error occurred while fetching the contact details" });
+  }
+};
+
+const getAllForUser = async (req, reply) => {
+  try {
+    const { id } = req.params;
+    const contactDetails = await ContactDetailService.getAllForUser(id);
+    reply.send(contactDetails);
+  } catch (error) {
+    console.log("🚀 get contact details error:", error);
+    reply
+      .code(500)
+      .send({ message: "Error occurred while fetching the contact details" });
+  }
+};
+
 export default {
   createContactDetailController,
   getAllContactDetailsController,
   getContactDetailByIdController,
   updateContactDetailController,
   deleteContactDetailController,
+  getAllContactDetailsInSameDeptAndMinistryController,
+  getAllForUser,
 };

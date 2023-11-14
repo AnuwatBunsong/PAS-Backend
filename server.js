@@ -8,6 +8,7 @@ fastify.register(cors, { origin: "*" });
 fastify.register(routes.ministryRoutes, { prefix: "/api" });
 fastify.register(routes.departmentRoutes, { prefix: "/api" });
 fastify.register(routes.contactDetailRoutes, { prefix: "/api" });
+fastify.register(routes.userRoutes, { prefix: "/api" });
 
 const start = async () => {
   try {

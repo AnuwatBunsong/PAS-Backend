@@ -1,4 +1,4 @@
-import contactDetailController  from "../controller/contactdetail_controller.js";
+import contactDetailController from "../controller/contactdetail_controller.js";
 
 export const contactDetailRoutes = (fastify, options, done) => {
   fastify.post(
@@ -20,6 +20,14 @@ export const contactDetailRoutes = (fastify, options, done) => {
   fastify.delete(
     "/contactdetails/:id",
     contactDetailController.deleteContactDetailController
+  );
+  fastify.get(
+    "/contactdetails/:id/:ministryId/",
+    contactDetailController.getAllContactDetailsInSameDeptAndMinistryController
+  );
+  fastify.get(
+    "/contactdetails/user/:id",
+    contactDetailController.getAllForUser
   );
 
   done();

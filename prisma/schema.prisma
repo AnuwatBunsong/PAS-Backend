@@ -30,12 +30,12 @@ model ContactDetail {
   phone         String?     @db.VarChar
   mobile        String?     @db.VarChar
   email         String?     @db.VarChar
-  name_         String?     @map("name ") @db.VarChar(50)
-  position_     String?     @map("position ") @db.VarChar(128)
-  adderr_       String?     @map("adderr ") @db.VarChar(256)
-  picture_      String?     @map("picture ") @db.VarChar(50)
-  Department    Department? @relation(fields: [department_id], references: [id], map: "contact_detail_department_id_fkey")
-  Ministry      Ministry?   @relation(fields: [ministry_id], references: [id], map: "contact_detail_ministry_id_fkey")
+  name          String?     @db.VarChar(50)
+  position      String?     @db.VarChar(128)
+  adderr        String?     @db.VarChar(256)
+  picture       String?     @db.VarChar(50)
+  department    Department? @relation(fields: [department_id], references: [id], map: "contact_detail_department_id_fkey")
+  ministry      Ministry?   @relation(fields: [ministry_id], references: [id], map: "contact_detail_ministry_id_fkey")
 }
 
 model Department {
@@ -45,6 +45,8 @@ model Department {
   Admin         User[]
   ContactDetail ContactDetail[]
   Ministry      Ministry?       @relation(fields: [minisid], references: [id], map: "department_minisid_fkey")
+
+  @@map("department")
 }
 
 model Ministry {
