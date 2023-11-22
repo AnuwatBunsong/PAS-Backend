@@ -9,10 +9,11 @@ fastify.register(routes.ministryRoutes, { prefix: "/api" });
 fastify.register(routes.departmentRoutes, { prefix: "/api" });
 fastify.register(routes.contactDetailRoutes, { prefix: "/api" });
 fastify.register(routes.userRoutes, { prefix: "/api" });
+fastify.register(routes.organizationRoutes, { prefix: "/api" });
 
 const start = async () => {
   try {
-    await fastify.listen({ port: 3000 });
+    await fastify.listen({ port: 3000 }); 
     console.log(`Server running at http://localhost:3000`);
   } catch (err) {
     fastify.log.error(err);
