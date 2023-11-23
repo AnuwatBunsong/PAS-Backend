@@ -41,4 +41,16 @@ export const OrganizationController = {
       throw error;
     }
   },
+
+  createMany: async (req, reply) => {
+    try {
+      const newOrganizations = await OrganizationService.createMany(req.body);
+      reply.code(201).send(newOrganizations);
+    } catch (error) {
+      console.log("🚀 create organizations error:", error);
+      reply
+        .code(500)
+        .send({ message: "Error occurred while creating the organizations" });
+    }
+  },
 };

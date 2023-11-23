@@ -5,5 +5,6 @@ export const organizationRoutes = (fastify, options, done) => {
   fastify.get("/organizations", OrganizationController.getAll);
   fastify.get("/organizations/:id", OrganizationController.getById);
   fastify.put("/organizations/:id", OrganizationController.update);
+
   done();
 };

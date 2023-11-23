@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const ContactDetailService = {
-  createContactDetail: async (data) => {
+  create: async (data) => {
     try {
       return await prisma.contactDetail.create({ data });
     } catch (error) {
@@ -10,7 +10,7 @@ export const ContactDetailService = {
       throw error;
     }
   },
-  getAllContactDetails: async () => {
+  getAll: async () => {
     try {
       return await prisma.contactDetail.findMany({
         orderBy: {
@@ -26,7 +26,7 @@ export const ContactDetailService = {
       throw error;
     }
   },
-  getContactDetailById: async (id) => {
+  getById: async (id) => {
     try {
       return await prisma.contactDetail.findUnique({
         where: { id: Number(id) },
@@ -36,7 +36,7 @@ export const ContactDetailService = {
       throw error;
     }
   },
-  updateContactDetail: async (id, data) => {
+  update: async (id, data) => {
     try {
       return await prisma.contactDetail.update({
         where: { id: Number(id) },
@@ -47,7 +47,7 @@ export const ContactDetailService = {
       throw error;
     }
   },
-  deleteContactDetail: async (id) => {
+  delete: async (id) => {
     try {
       return await prisma.contactDetail.delete({ where: { id: Number(id) } });
     } catch (error) {
@@ -55,7 +55,7 @@ export const ContactDetailService = {
       throw error;
     }
   },
-  getAllContactDetailsInSameDeptAndMinistry: async (id, ministryId) => {
+  getAllInSameDeptAndMinistry: async (id, ministryId) => {
     try {
       return await prisma.contactDetail.findMany({
         where: {
@@ -81,7 +81,7 @@ export const ContactDetailService = {
       const user = await prisma.user.findFirst({
         where: { id: Number(id) },
         include: {
-          ministry: true,
+          Ministry: true,
           Department: true,
         },
       });
@@ -98,7 +98,7 @@ export const ContactDetailService = {
           ],
         },
         include: {
-          ministry: true,
+          Ministry: true,
           department: true,
         },
         orderBy: {
@@ -107,6 +107,18 @@ export const ContactDetailService = {
       });
     } catch (error) {
       console.error("Error fetching contact details for user:", error);
+      throw error;
+    }
+  },
+
+  createMany: async (data) => {
+    try {
+      return await prisma.contactDetail.createMany({
+        data,
+        skipDuplicates: true,
+      });
+    } catch (error) {
+      console.error("Error creating contact detail:", error);
       throw error;
     }
   },

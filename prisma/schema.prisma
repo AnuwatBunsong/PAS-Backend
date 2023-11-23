@@ -8,60 +8,71 @@ datasource db {
 }
 
 model User {
-  id              Int           @id(map: "admin_pkey") @default(autoincrement())
-  username        String?       @db.VarChar
-  password        String?       @db.VarChar
+  id Int @id(map: "admin_pkey") @default(autoincrement())
+
+  username        String?   @db.VarChar
+  password        String?   @db.VarChar
   role            userrole?
-  picture         String?       @db.VarChar
+  picture         String?   @db.VarChar
   organization_id Int?
   department_id   Int?
   ministry_id     Int?
-  ministry        Ministry?     @relation(fields: [ministry_id], references: [id], map: "admin_ministry_id_fkey")
-  Department      Department?   @relation(fields: [department_id], references: [id], map: "admin_department_id_fkey")
-  Organization    Organization? @relation(fields: [organization_id], references: [id], map: "admin_organization_id_fkey")
+
+  Ministry     Ministry?     @relation(fields: [ministry_id], references: [id], map: "admin_ministry_id_fkey")
+  Department   Department?   @relation(fields: [department_id], references: [id], map: "admin_department_id_fkey")
+  Organization Organization? @relation(fields: [organization_id], references: [id], map: "admin_organization_id_fkey")
 }
 
 model ContactDetail {
-  id            Int         @id(map: "contact_detail_pkey") @default(autoincrement())
+  id Int @id(map: "contact_detail_pkey") @default(autoincrement())
+
   department_id Int?
   ministry_id   Int?
-  hotline       String?     @db.VarChar
-  fax           String?     @db.VarChar
-  phone         String?     @db.VarChar
-  mobile        String?     @db.VarChar
-  email         String?     @db.VarChar
-  name          String?     @db.VarChar(50)
-  position      String?     @db.VarChar(128)
-  adderr        String?     @db.VarChar(256)
-  picture       String?     @db.VarChar(50)
-  department    Department? @relation(fields: [department_id], references: [id], map: "contact_detail_department_id_fkey")
-  ministry      Ministry?   @relation(fields: [ministry_id], references: [id], map: "contact_detail_ministry_id_fkey")
+  hotline       String? @db.VarChar
+  fax           String? @db.VarChar
+  phone         String? @db.VarChar
+  mobile        String? @db.VarChar
+  email         String? @db.VarChar
+  name          String? @db.VarChar(50)
+  position      String? @db.VarChar(128)
+  adderr        String? @db.VarChar(256)
+  picture       String? @db.VarChar(50)
+
+  department Department? @relation(fields: [department_id], references: [id], map: "contact_detail_department_id_fkey")
+  Ministry   Ministry?   @relation(fields: [ministry_id], references: [id], map: "contact_detail_ministry_id_fkey")
 }
 
 model Department {
-  id            Int             @id(map: "department_pkey") @default(autoincrement())
-  minisid       Int?
-  name          String?         @db.VarChar
+  id Int @id(map: "department_pkey") @default(autoincrement())
+
+  ministryId Int?    @map("ministry_id")
+  name       String? @db.VarChar
+
   Admin         User[]
   ContactDetail ContactDetail[]
-  Ministry      Ministry?       @relation(fields: [minisid], references: [id], map: "department_minisid_fkey")
+  Ministry      Ministry?       @relation(fields: [ministryId], references: [id], map: "department_minisid_fkey")
 
   @@map("department")
 }
 
 model Ministry {
-  id            Int             @id(map: "ministry_pkey") @default(autoincrement())
-  name          String?         @db.VarChar
+  id Int @id(map: "ministry_pkey") @default(autoincrement())
+
+  name           String?      @db.VarChar
+  organizationId Int          @default(1) @map("organization_id")
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
   ContactDetail ContactDetail[]
   Department    Department[]
   User          User[]
 }
 
 model Organization {
-  id    Int     @id(map: "organization_pkey") @default(autoincrement())
-  name  String? @db.VarChar
-  logo  String? @db.VarChar
-  Admin User[]
+  id       Int        @id(map: "organization_pkey") @default(autoincrement())
+  name     String?    @db.VarChar
+  logo     String?    @db.VarChar
+  Admin    User[]
+  Ministry Ministry[]
 }
 
 enum userrole {

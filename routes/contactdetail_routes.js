@@ -1,34 +1,20 @@
-import contactDetailController from "../controller/contactdetail_controller.js";
+import { ContactDetailController } from "../controller/contactdetail_controller.js";
 
 export const contactDetailRoutes = (fastify, options, done) => {
-  fastify.post(
-    "/contactdetails",
-    contactDetailController.createContactDetailController
-  );
-  fastify.get(
-    "/contactdetails",
-    contactDetailController.getAllContactDetailsController
-  );
-  fastify.get(
-    "/contactdetails/:id",
-    contactDetailController.getContactDetailByIdController
-  );
-  fastify.put(
-    "/contactdetails/:id",
-    contactDetailController.updateContactDetailController
-  );
-  fastify.delete(
-    "/contactdetails/:id",
-    contactDetailController.deleteContactDetailController
-  );
+  fastify.post("/contactdetails", ContactDetailController.create);
+  fastify.get("/contactdetails", ContactDetailController.getAll);
+  fastify.get("/contactdetails/:id", ContactDetailController.getById);
+  fastify.put("/contactdetails/:id", ContactDetailController.update);
+  fastify.delete("/contactdetails/:id", ContactDetailController.delete);
   fastify.get(
     "/contactdetails/:id/:ministryId/",
-    contactDetailController.getAllContactDetailsInSameDeptAndMinistryController
+    ContactDetailController.getAllInSameDeptAndMinistry
   );
   fastify.get(
     "/contactdetails/user/:id",
-    contactDetailController.getAllForUser
+    ContactDetailController.getAllForUser
   );
+  fastify.post("/contactdetails/many", ContactDetailController.createMany);
 
   done();
 };
