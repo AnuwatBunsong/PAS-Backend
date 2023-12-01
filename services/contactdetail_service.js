@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const ContactDetailService = {
@@ -10,14 +10,23 @@ export const ContactDetailService = {
       throw error;
     }
   },
-  getAll: async () => {
+  getAll: async (query) => {
     try {
+      const where = {};
+
+      if (query.department) {
+        where.department = {
+          name: { contains: query.department, mode: "insensitive" },
+        };
+      }
+
       return await prisma.contactDetail.findMany({
+        where: where,
         orderBy: {
           id: "desc",
         },
         include: {
-          ministry: true,
+          Ministry: true,
           department: true,
         },
       });
@@ -30,6 +39,10 @@ export const ContactDetailService = {
     try {
       return await prisma.contactDetail.findUnique({
         where: { id: Number(id) },
+        // include: {
+        //   Ministry: true,
+        //   Department: true,
+        // },
       });
     } catch (error) {
       console.error(`Error fetching contact detail with ID ${id}:`, error);
@@ -78,6 +91,10 @@ export const ContactDetailService = {
 
   getAllForUser: async (id) => {
     try {
+      console.log(
+        "🚀 ~ file: contactdetail_service.js:93 ~ getAllForUser: ~ id:",
+        id
+      );
       const user = await prisma.user.findFirst({
         where: { id: Number(id) },
         include: {
@@ -89,20 +106,15 @@ export const ContactDetailService = {
       if (!user) {
         throw new Error("User not found");
       }
+
       return await prisma.contactDetail.findMany({
-        where: {
-          AND: [
-            {
-              ministry_id: Number(user.ministry_id),
-            },
-          ],
-        },
+        where: { ministry_id: Number(user.ministry_id) },
         include: {
           Ministry: true,
           department: true,
         },
         orderBy: {
-          id: "desc",
+          id: "asc",
         },
       });
     } catch (error) {
@@ -113,13 +125,46 @@ export const ContactDetailService = {
 
   createMany: async (data) => {
     try {
+      console.log(
+        "🚀 ~ file: contactdetail_service.js:125 ~ createMany: ~ data:",
+        data[0]
+      );
       return await prisma.contactDetail.createMany({
-        data,
+        data: data,
         skipDuplicates: true,
       });
     } catch (error) {
       console.error("Error creating contact detail:", error);
       throw error;
+    }
+  },
+
+  saeach: async (req, res) => {
+    const { department } = req.query;
+    try {
+      let results;
+      // switch (category) {
+      //   case 'department':
+      //     results = await prisma.contactDetail.findMany({
+      //       where: { department: { name: { contains: query } } },
+      //     });
+      //     break;
+      //   case 'name':
+      //     results = await prisma.contactDetail.findMany({
+      //       where: { name: { contains: query } },
+      //     });
+      //     break;
+      //   case 'position':
+      //     results = await prisma.contactDetail.findMany({
+      //       where: { position: { contains: query } },
+      //     });
+      //     break;
+      //   default:
+      //     return res.status(400).send('Invalid search category');
+      // }
+      res.json(results);
+    } catch (error) {
+      res.status(500).send("Server error");
     }
   },
 };

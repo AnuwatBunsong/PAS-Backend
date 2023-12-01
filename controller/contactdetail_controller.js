@@ -15,7 +15,7 @@ export const ContactDetailController = {
 
   getAll: async (req, reply) => {
     try {
-      const contactDetails = await ContactDetailService.getAll();
+      const contactDetails = await ContactDetailService.getAll(req.query);
       reply.send(contactDetails);
     } catch (error) {
       console.log("🚀 get contact details error:", error);
@@ -110,6 +110,11 @@ export const ContactDetailController = {
         department_id: Number(val.department_id),
         ministry_id: Number(val.ministry_id),
       }));
+      console.log(
+        "🚀 ~ file: contactdetail_controller.js:113 ~ mapping ~ mapping:",
+        mapping[0]
+      );
+
       const newContactDetails = await ContactDetailService.createMany(mapping);
       reply.code(201).send(newContactDetails);
     } catch (error) {

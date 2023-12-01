@@ -36,6 +36,11 @@ export const UserService = {
     try {
       const user = await prisma.user.findFirst({
         where: { id: Number(id) },
+        include: {
+          Organization: true,
+          Ministry: true,
+          Department: true,
+        },
       });
       return user;
     } catch (error) {
