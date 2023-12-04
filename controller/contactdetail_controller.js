@@ -44,7 +44,14 @@ export const ContactDetailController = {
 
   update: async (req, reply) => {
     try {
-      const updated = await ContactDetailService.update(req.id, req.body);
+      const updated = await ContactDetailService.update(
+        req.params.id,
+        req.body
+      );
+      console.log(
+        "🚀 ~ file: contactdetail_controller.js:48 ~ update: ~ req.id:",
+        req.id
+      );
       if (!updated) {
         reply.code(404).send({ message: "Contact detail not found" });
         return;
