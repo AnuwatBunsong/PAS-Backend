@@ -11,18 +11,8 @@ fastify.register(routes.contactDetailRoutes, { prefix: "/api" });
 fastify.register(routes.userRoutes, { prefix: "/api" });
 fastify.register(routes.organizationRoutes, { prefix: "/api" });
 
-const start = async () => {
-  try {
-    await fastify.listen({ port: 3000 }); 
-    console.log(`Server running at http://localhost:3000`);
-  } catch (err) {
-    fastify.log.error(err);
-    process.exit(1);
-  }
-};
+fastify.get("/", async (request, reply) => {
+  return { hello: "world" };
+});
 
-start();
-
-export default {
-  fastify,
-};
+fastify.listen({ port: process.env.PORT || 3000, host: "0.0.0.0" });
