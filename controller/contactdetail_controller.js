@@ -15,6 +15,10 @@ export const ContactDetailController = {
 
   getAll: async (req, reply) => {
     try {
+      console.log(
+        "🚀 ~ file: contactdetail_controller.js:19 ~ getAll: ~ req.query:",
+        req.query
+      );
       const contactDetails = await ContactDetailService.getAll(req.query);
       reply.send(contactDetails);
     } catch (error) {

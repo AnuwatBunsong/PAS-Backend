@@ -20,6 +20,18 @@ export const ContactDetailService = {
         };
       }
 
+      if (query.name) {
+        where.name = { contains: query.name, mode: "insensitive" };
+      }
+
+      if (query.position) {
+        where.position = { contains: query.position, mode: "insensitive" };
+      }
+
+      if (query.ministry_id) {
+        where.ministry_id = parseInt(query.ministry_id, 10);
+      }
+
       return await prisma.contactDetail.findMany({
         where: where,
         orderBy: {
